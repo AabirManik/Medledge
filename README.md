@@ -1,114 +1,54 @@
+# 🛡️ Secure Report Sharing Platform with Audit Trail
+
+A **Solidity smart contract** built to securely **upload, share, and track reports** on the blockchain.  
+It ensures **transparency, immutability, and trust** by maintaining an on-chain **audit trail** of all report uploads.  
+
+> 🌐 **Deployed on the Celo Sepolia Testnet**  
+> [View Contract on Blockscout ↗](https://celo-sepolia.blockscout.com/address/0x6476A707Ef091Bfaab285C6064e648337D30A5B0?tab=txs)
 
 
+---<img width="1597" height="1199" alt="celo3" src="https://github.com/user-attachments/assets/d160060d-021a-44e4-8b91-8274bb4ae7de" />
 
+## 📘 Project Description
 
-# 🛡️ Secure Report 
-Sharing Platform with Audit Trail
+The **Secure Report Sharing Platform** is a simple decentralized application (dApp) that allows users to upload reports to the blockchain.  
+Each report is stored with details such as:
+- Title  
+- Description  
+- IPFS hash (file reference)  
+- Uploader’s address  
+- Timestamp  
 
-A simple yet powerful **Solidity smart contract** for securely uploading and sharing reports, while keeping a **transparent on-chain audit trail**.  
-Deployed on the **Celo Sepolia Testnet**, this project demonstrates how blockchain can ensure **trust, transparency, and data integrity** in report management.
+By using blockchain, the project ensures:
+- Reports can’t be modified or deleted once uploaded.  
+- Every upload is recorded as an event (audit trail).  
+- The system remains transparent and verifiable by anyone.
 
----<img width="1597" height="1199" alt="celo3" src="https://github.com/user-attachments/assets/5cc675a8-fda9-4122-ad1f-2380fa6bdf9f" />
-
-## 📖 Project Description
-
-This project allows users to **upload reports securely**, store their details on the blockchain, and maintain an immutable **audit trail** of uploads.  
-Each report contains metadata such as title, description, uploader address, timestamp, and IPFS hash for off-chain storage.
-
-It’s a great starting point for beginners who want to understand:
-- How to **structure and deploy** Solidity smart contracts  
-- How to **store and retrieve** data on the blockchain  
-- How **audit trails** can be implemented using blockchain events  
+This project is perfect for **beginners** learning:
+- Solidity smart contract development  
+- How to log immutable data using blockchain events  
+- How IPFS and blockchain can work together  
 
 ---
 
-## 🚀 What It Does
+## ⚙️ What It Does
 
-1. **Uploads Reports Securely**  
-   Users can upload a report containing title, description, and IPFS hash (file stored off-chain).
-
-2. **Maintains Audit Trail**  
-   Each upload triggers an on-chain event — creating a **tamper-proof log** of all report uploads.
-
-3. **Retrieves Reports**  
-   Users can view all reports or fetch any specific one using its report ID.
-
-4. **Showcases Blockchain Use Case**  
-   Demonstrates how decentralized systems can maintain transparency in file management and sharing.
+- 📝 **Upload Reports:** Users can upload report metadata (title, description, IPFS link).  
+- 🔍 **Retrieve Reports:** Anyone can view all uploaded reports or get a specific one by ID.  
+- 🧾 **Audit Trail:** Each upload emits an event recorded on the blockchain, ensuring full transparency.  
+- 💡 **Off-chain Storage Integration:** The IPFS hash allows large files to be stored off-chain securely.
 
 ---
 
 ## ✨ Features
 
-- ✅ **Secure Report Uploads** – Reports include title, description, IPFS hash, and uploader address.  
-- 🧾 **Immutable Audit Log** – Every upload emits an event stored on the blockchain.  
-- 🔍 **Report Retrieval** – Access all reports or fetch one by ID instantly.  
-- 💾 **Off-chain File Storage (IPFS)** – Large files are stored off-chain while metadata remains on-chain.  
-- 🌐 **Deployed on Celo Sepolia Testnet** – Explore real transactions and verify transparency.  
-- 👨‍💻 **Beginner-Friendly Solidity Code** – Clean, modular, and easy to understand for new developers.
+| Feature | Description |
+|----------|-------------|
+| ✅ Secure Uploads | Upload reports with title, description, and IPFS hash |
+| 🔒 Immutable Storage | Data stored permanently on the blockchain |
+| 📜 Transparent Logging | Every upload emits a blockchain event |
+| 🌍 Publicly Verifiable | Anyone can view and verify report uploads |
+| 🪶 Lightweight Code | Clean, beginner-friendly Solidity contract |
+| 🧠 Educational Value | Ideal for learning smart contract structure and event logging |
 
 ---
-
-## 🧠 Code Overview
-
-Below is the main Solidity code used in this project 👇
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-contract SecureReportShare {
-
-    // Structure to store report details
-    struct Report {
-        uint256 id;
-        string title;
-        string ipfsHash;  // File stored off-chain (e.g., on IPFS)
-        string description;
-        address uploadedBy;
-        uint256 timestamp;
-    }
-
-    // Array to store all uploaded reports
-    Report[] public reports;
-
-    // Event to log uploads (Audit Trail)
-    event ReportUploaded(
-        uint256 id,
-        string title,
-        string ipfsHash,
-        address indexed uploadedBy,
-        uint256 timestamp
-    );
-
-    // Function to upload a new report
-    function uploadReport(
-        string memory _title,
-        string memory _ipfsHash,
-        string memory _description
-    ) public {
-        uint256 reportId = reports.length + 1;
-
-        reports.push(Report({
-            id: reportId,
-            title: _title,
-            ipfsHash: _ipfsHash,
-            description: _description,
-            uploadedBy: msg.sender,
-            timestamp: block.timestamp
-        }));
-
-        emit ReportUploaded(reportId, _title, _ipfsHash, msg.sender, block.timestamp);
-    }
-
-    // Function to view all reports
-    function getAllReports() public view returns (Report[] memory) {
-        return reports;
-    }
-
-    // Function to get a single report by ID
-    function getReportById(uint256 _id) public view returns (Report memory) {
-        require(_id > 0 && _id <= reports.length, "Invalid report ID");
-        return reports[_id - 1];
-    }
-}
